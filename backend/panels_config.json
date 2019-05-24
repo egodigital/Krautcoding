@@ -1,0 +1,44 @@
+[{
+    "panel": 0,
+    "routesGroups": [
+      [0],
+      [3, 5]
+    ],
+    "markers": [
+      {
+        "lat": 50.782201,
+        "lng": 6.071190,
+        "iconPath": "/images/dashboard/hub_yellow.png",
+        "name": "Hub Bendplatz"
+      },
+      {
+        "lat": 50.779384,
+        "lng": 6.108836,
+        "iconPath": "/images/dashboard/hub_purple.png",
+        "name": "Hub Europaplatz"
+      },
+      {
+        "lat": 50.763025,
+        "lng": 6.087871,
+        "iconPath": "/images/dashboard/hub_red.png",
+        "name": "Hub Rewe Stenten"
+      },
+      {
+        "lat": 50.782565,
+        "lng": 6.048073,
+        "iconPath": "/images/dashboard/hub_blue.png",
+        "name": "Hub eGo"
+      },
+      {
+        "lat": 50.774798,
+        "lng": 6.068519,
+        "iconPath": "/images/dashboard/hub_purple.png",
+        "name": "Hub Weißenberg"
+      }
+    ],
+    "southWestLat": 50.765805,
+    "southWestLng": 6.048073,
+    "northEastLat": 50.784565,
+    "northEastLng": 6.108836
+  }
+]

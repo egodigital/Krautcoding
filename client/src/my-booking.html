@@ -1,0 +1,201 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-booking">
+  <template>
+    <style include="shared-styles">
+      :host{
+        height:100%;
+        width:100%;
+        display:block;
+      }
+      paper-button.green {
+        background-color: #ff7e34;
+        color: white;
+      }
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        /*height: calc(100vh - 140px);*/
+        height:100%;
+        width:100%;
+      }
+	  .hor {
+		  display: inline-block;
+	  }
+	  h3 b {
+		  background-color:#ff6500!important;
+		  color: black!important;
+	  }
+      /* Optional: Makes the sample page fill the window. */
+	  /* TODO: fix the hack.crowdcwoding.it link below!!! */
+    </style>
+	  <iron-ajax id="ajaxrequest"
+              url="localhost:3000/route?lat1=[[currlat]]\&lon1=[[currlng]]\&lat2=[[destlat]]\&lon2=[[destlng]]"
+			  handle-as="json"
+			  last-response={{ajaxResponse}}
+			  debounce-duration="300"></iron-ajax>
+    <div class="card">
+      <iron-form>
+        <form method="get" action="TODO">
+          <h4>New Route</h4>
+          <paper-input id="origin" type="text" placeholder="Start" value="{{origin}}"></paper-input><br>
+          <paper-input id="destination" type="text" placeholder="Ziel" value="{{destination}}"></paper-input>
+          <br>
+          <paper-toggle-button id="charging-service" checked>Charging Service</paper-toggle-button>
+	        <br><br><paper-button toggles raised on-click="_saveRequest" class="green"><iron-icon icon="icons:search"></iron-icon> SEARCH</paper-button>
+        </form>
+      </iron-form>
+    </div>
+  <template is="dom-repeat" items="[[ajaxResponse]]">
+	  <div class="card">
+		  <template is="dom-if" if="{{!isDiscount(item.discount)}}">
+			  <h2>[[item.name]]</h2>
+		  </template>
+		  <template is="dom-if" if="{{isDiscount(item.discount)}}">
+			  <div class="hor">
+			  	<h2>Switching cars in [[getAddressName(item)]]</h2>
+			  	<h3><b class="card">[[item.discount]] discount</b></h3>
+			  </div>
+		  </template>
+		  [[formatTime(item.duration)]] • [[formatDistance(item.distance)]]
+		  <a href="https://www.google.com/maps/dir/?api=1&origin=[[origin]]&destination=[[destination]]&travelmode=driving[[buildWaypointLink(item)]]">
+			  <paper-button raised class="green"><iron-icon icon="maps:navigation"></iron-icon> Navigate</paper-button>
+		  </a>
+	  </div>
+  </template>
+  </template>
+
+  <script>
+    class MyBooking extends Polymer.Element {
+      static get is() {
+      	return 'my-booking';
+      }
+      static get properties() {
+	      return {
+		      origin: {
+			      type: String
+		      },
+		      destination: {
+			      type: String
+		      },
+		      ajaxResponse: {
+			      type: Array
+		      },
+			  currlat: {
+				  type: Number,
+				  value: 50.776711,
+			  },
+			  currlng: {
+				  type: Number,
+				  value: 6.077931,
+			  },
+			  destlat: {
+				  type: Number
+			  },
+			  destlng: {
+				  type: Number
+			  }
+	      }
+
+      }
+
+    _saveRequest() {
+      	console.log('foo');
+	    this.$.ajaxrequest.generateRequest();
+    }
+
+    ready() {
+	    super.ready();
+	    this.map = this.$.map;
+	    console.log('Helloo ' + this.map);
+	    this.injectScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyBfVBD9T7aonkff0OMmXh-Z9_qHyOpWsAM&libraries=places')
+		    .then(() => {
+			    console.log('Script loaded!');
+				this.initAutocompleteDestination();
+			    this.initAutocompleteOrigin();
+		    }).catch((error) => {
+		    console.log(error);
+	    });
+    }
+
+	buildWaypointLink(option) {
+      	if (option.waypoints.length > 2) {
+			return "&waypoints=" + option.waypoints[1].GeoPoint.lat + "," + option.waypoints[1].GeoPoint.lng;
+		}
+	}
+	isDiscount(discount) {
+    	return discount !== '0%';
+	}
+	formatTime(seconds) {
+      	let minutes = Math.floor(seconds / 60);
+      	return minutes+"min ";
+	}
+	formatDistance(meters) {
+      	if (meters > 500) {
+      		let km = meters / 1000;
+			km = Math.round( km * 10) / 10;
+			return km + "km";
+		}
+      	return meters + "m";
+	}
+	getAddressName(item){
+	return item.waypoints[1].AddressName;
+	}
+    injectScript(src) {
+	    return new Promise((resolve, reject) => {
+		    const script = document.createElement('script');
+		    script.async = true;
+		    script.src = src;
+		    script.addEventListener('load', resolve);
+		    script.addEventListener('error', () => reject('Error loading script.'));
+		    script.addEventListener('abort', () => reject('Script loading aborted.'));
+		    document.head.appendChild(script);
+	    });
+    }
+
+    initAutocompleteDestination() {
+		//console.log("autocomplete" + this.$.destination);
+		let autocompletedestination = new google.maps.places.Autocomplete(this.$.destination, {types:['geocode']});
+		google.maps.event.addListener(autocompletedestination, 'place_changed',
+			function callback()
+			{
+				var place = autocompletedestination.getPlace();
+				this.destlat = place.geometry.location.lat();
+				this.destlng = place.geometry.location.lng();
+				console.log(place.geometry.location);
+			}.bind(this)); // we need bind(this) so the this in the function refers to MyBooking
+	}
+    initAutocompleteOrigin() {
+	    //console.log("autocomplete" + this.$.origin);
+	    let autocompleteorigin = new google.maps.places.Autocomplete(this.$.origin, {types:['geocode']});
+	    google.maps.event.addListener(autocompleteorigin, 'place_changed',
+		    function callback()
+		    {
+			    var place = autocompleteorigin.getPlace();
+			    this.destlat = place.geometry.location.lat();
+			    this.destlng = place.geometry.location.lng();
+			    console.log(place.geometry.location);
+		    }.bind(this)); // we need bind(this) so the this in the function refers to MyBooking
+    }
+
+    }
+    window.customElements.define(MyBooking.is, MyBooking);
+  </script>
+</dom-module>

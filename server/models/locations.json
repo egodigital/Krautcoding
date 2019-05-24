@@ -1,0 +1,72 @@
+{
+  "name": "locations",
+  "base": "Model",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "current": {
+      "type": "geopoint",
+      "required": true
+    },
+    "destination": {
+      "type": "geopoint",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {
+    "route": {
+      "accepts": [
+        {
+          "arg": "current",
+          "type": "geopoint",
+          "required": true,
+          "description": "location of client"
+        },
+        {
+          "arg": "destination",
+          "type": "geopoint",
+          "required": true,
+          "description": "location of the destination"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "options",
+          "type": "array",
+          "root": true,
+          "description": "optionen für routen"
+        }
+      ],
+      "description": "get locations from client",
+      "http": [
+        {
+          "path": "/route",
+          "verb": "get"
+        }
+      ]
+    },
+    "chargings": {
+      "accepts": [],
+      "returns": [
+        {
+          "arg": "chargingPoints",
+          "type": "array",
+          "root": true,
+          "description": "List of charging points"
+        }
+      ],
+      "description": "Return list of all charging points",
+      "http": [
+        {
+          "path": "/chargings",
+          "verb": "get"
+        }
+      ]
+    }
+  }
+}

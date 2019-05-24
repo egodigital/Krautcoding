@@ -1,0 +1,56 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="shared-styles.html">
+<link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css">
+<script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+
+<dom-module id="my-map">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      html, body {
+        margin: 0;
+    }
+
+    #azureMap {
+        height: 100vh;
+        width: 100vw;
+    }
+    </style>
+    <div id="azureMap"></div>
+    <script type="text/javascript">
+        //Create an instance of the map control and set some options.
+        var map = new atlas.Map('azureMap', {
+            center: [-122.33, 47.6],
+            zoom: 12,
+            language: 'en-US',
+            authOptions: {
+                authType: 'subscriptionKey',
+                subscriptionKey: 'tTk1JVEaeNvDkxxnxHm9cYaCvqlOq1u-fXTvyXn2XkA'
+            }
+        });
+    </script>
+    <p>blaaa</p>
+  </template>
+
+  <script>
+    class myMap extends Polymer.Element {
+      static get is() { return 'my-map'; }
+    }
+
+    window.customElements.define(myMap.is, myMap);
+  </script>
+</dom-module>

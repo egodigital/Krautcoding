@@ -1,0 +1,16 @@
+version: '2.2'
+services:
+  backend:
+    build: backend/.
+    ports:
+    - 3000:3000
+    cpu_count: 1
+    mem_limit: 512m
+    mem_reservation: 256m
+  frontend:
+    build: map/.
+    ports:
+     - 8084:8080
+    cpu_count: 1
+    mem_limit: 512m
+    mem_reservation: 256m

@@ -1,0 +1,5 @@
+{
+	"mapsApiKey": "keys",
+	"databaseURL": "https://bloomberg-233420.firebaseio.com",
+	"simulation": false
+}

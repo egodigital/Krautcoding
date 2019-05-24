@@ -1,0 +1,74 @@
+[
+	{
+		"ID" : 495200000001,
+		"Status" : {
+			"Peoplemover" : 50,
+			"Parkingmover" : 50,
+			"EmptySpaces" : 50
+		},
+		"Location" : {
+			"City" : "Aachen",
+			"Adress": "Vaalserstraße 48",
+			"Latitude" : 50.770156,
+      "Longitude" : 6.072259,
+		},
+		"workshop" : {
+			"basics" : 0,
+			"full workshops" : 0
+		}
+	},
+	{
+		"ID" : 495200000002,
+		"Status" : {
+			"Peoplemover" : 50,
+			"Parkingmover" : 50,
+			"EmptySpaces" : 50
+		},
+		"Location" : {
+			"City" : "Aachen",
+			"Adress": "Kühlwetterstraße 24",
+			"Latitude" : 50.783296,
+      "Longitude" : 6.072489,
+		},
+		"workshop" : {
+			"basics" : 1,
+			"full workshops" : 0
+		}
+	},
+	{
+		"ID" : 495200000003,
+		"Status" : {
+			"Peoplemover" : 50,
+			"Parkingmover" : 50,
+			"EmptySpaces" : 50
+		},
+		"Location" : {
+			"City" : "Aachen",
+			"Adress": "Dennewartstraße 25",
+			"Latitude" : 50.780627,
+      "Longitude" : 6.105753,
+		},
+		"workshop" : {
+			"basics" : 1,
+			"full workshops" : 1
+		}
+	},
+	{
+		"ID" : 495200000004,
+		"Status" : {
+			"Peoplemover" : 50,
+			"Parkingmover" : 50,
+			"EmptySpaces" : 50
+		},
+		"Location" : {
+			"City" : "Aachen",
+			"Adress": "Bachstraße 14",
+			"Latitude" : 50.766793,
+      "Longitude" : 6.096694,
+		},
+		"workshop" : {
+			"basics" : 0,
+			"full workshops" : 0
+		}
+	},
+]
